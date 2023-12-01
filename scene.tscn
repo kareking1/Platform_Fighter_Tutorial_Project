@@ -1,0 +1,102 @@
+[gd_scene load_steps=14 format=3 uid="uid://dpmn3wioqnbc0"]
+
+[ext_resource type="PackedScene" uid="uid://b8q6vb1xi6qn" path="res://player.tscn" id="1_6gfu1"]
+[ext_resource type="Script" path="res://Enemy.gd" id="2_ltqte"]
+[ext_resource type="Script" path="res://Hurtbox.gd" id="3_qi1nq"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8ro2y"]
+size = Vector2(385, 60)
+
+[sub_resource type="CanvasTexture" id="CanvasTexture_s0s4a"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_kl5hx"]
+size = Vector2(105, 9)
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_bnev8"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_iy3cv"]
+size = Vector2(105, 9)
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_o6l73"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_tt2dw"]
+size = Vector2(571.688, 314.727)
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_lcklf"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bga40"]
+size = Vector2(19.0453, 17.4385)
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_dpp2j"]
+radius = 5.89569
+height = 14.3797
+
+[node name="Node2D" type="Node2D"]
+scale = Vector2(6.47905, 6.95424)
+
+[node name="Floor" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Floor"]
+position = Vector2(0.5, 46)
+shape = SubResource("RectangleShape2D_8ro2y")
+
+[node name="Sprite2D" type="Sprite2D" parent="Floor"]
+position = Vector2(0.249999, 46.125)
+scale = Vector2(385.5, 59.75)
+texture = SubResource("CanvasTexture_s0s4a")
+
+[node name="Platform_Right" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platform_Right"]
+position = Vector2(105.5, -33.5)
+shape = SubResource("RectangleShape2D_kl5hx")
+one_way_collision = true
+one_way_collision_margin = 3.3
+
+[node name="Sprite2D" type="Sprite2D" parent="Platform_Right"]
+position = Vector2(105.375, -33.5)
+scale = Vector2(107.25, 9)
+texture = SubResource("PlaceholderTexture2D_bnev8")
+
+[node name="Platform_Left" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platform_Left"]
+position = Vector2(-110.5, -33.5)
+shape = SubResource("RectangleShape2D_iy3cv")
+one_way_collision = true
+one_way_collision_margin = 3.3
+
+[node name="Sprite2D" type="Sprite2D" parent="Platform_Left"]
+position = Vector2(-110.356, -33.361)
+scale = Vector2(104.75, 8.75)
+texture = SubResource("PlaceholderTexture2D_o6l73")
+
+[node name="Player" parent="." instance=ExtResource("1_6gfu1")]
+
+[node name="Blast_Zone" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Blast_Zone"]
+position = Vector2(-0.463028, 19.3634)
+shape = SubResource("RectangleShape2D_tt2dw")
+
+[node name="Enemy" type="StaticBody2D" parent="."]
+script = ExtResource("2_ltqte")
+
+[node name="Sprite2D" type="Sprite2D" parent="Enemy"]
+position = Vector2(84.7346, 6.47087)
+scale = Vector2(19.2342, 18.2246)
+texture = SubResource("PlaceholderTexture2D_lcklf")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Enemy"]
+position = Vector2(84.7813, 6.52327)
+shape = SubResource("RectangleShape2D_bga40")
+
+[node name="Hurtbox" type="Area2D" parent="Enemy"]
+script = ExtResource("3_qi1nq")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Enemy/Hurtbox"]
+position = Vector2(85.1976, 6.47087)
+shape = SubResource("CapsuleShape2D_dpp2j")
+
+[connection signal="body_exited" from="Blast_Zone" to="Player" method="_on_blast_zone_body_exited"]
+[connection signal="area_entered" from="Enemy/Hurtbox" to="Enemy" method="_on_hurtbox_area_entered"]
